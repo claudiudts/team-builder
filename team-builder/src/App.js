@@ -1,25 +1,43 @@
 import logo from './logo.svg';
 import './App.css';
+import Form from './components/Form';
+import React, { useState } from 'react';
+
+const defaultValues = {
+  name: '',
+  email: '',
+  role: ''
+};
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+  const [formValues, setFormValues] = useState(defaultValues);
+  const [savedFormInfo, setSavedFormInfo] = useState([]);
+  const change = (evt) => {
+    const { name, value } = evt.target;
+    setFormValues({...formValues, [name]: value});
+  };
+  const submit = (evt) => {
+    evt.preventDefault();
+    const newData = {
+      name: formValues.name.trim(),
+      email: formValues.email.trim(),
+      role: formValues.role.trimEnd(),
+    };
+    setSavedFormInfo([...savedFormInfo, newData])
+    setFormValues(defaultValues);
+  };
 
+  return (
+    <div className='container'> 
+      <h1>Member List</h1>
+      <ul>
+        <li>Name:{savedFormInfo.name} </li>
+      </ul>
+      
+      <Form 
+      formValues={formValues} 
+      change={change}  
+      submit={submit} />
+    </div> )
+    };
 export default App;
